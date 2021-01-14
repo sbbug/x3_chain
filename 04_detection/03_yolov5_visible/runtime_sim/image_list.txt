@@ -1,0 +1,1 @@
+../../../01_common/test_data/det_images/kite.jpg

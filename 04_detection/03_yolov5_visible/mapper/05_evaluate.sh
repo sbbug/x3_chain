@@ -1,0 +1,20 @@
+#!/bin/bash
+# Copyright (c) 2020 Horizon Robotics.All Rights Reserved.
+#
+# The material in this file is confidential and contains trade secrets
+# of Horizon Robotics Inc. This is proprietary information owned by
+# Horizon Robotics Inc. No part of this work may be disclosed,
+# reproduced, copied, transmitted, or used in any way for any purpose,
+# without the express written permission of Horizon Robotics Inc.
+
+set -e -v
+cd $(dirname $0) || exit
+
+model="./model_output/yolov5_quantized_model.onnx"
+image="../../../01_common/data/coco/coco_val2017/images/"
+anno="../../../01_common/data/coco/coco_val2017/annotations/instances_val2017.json"
+
+python3 -u ./coco_evaluate.py \
+  --model=${model} \
+  --image_path=${image} \
+  --annotation_path=${anno}
