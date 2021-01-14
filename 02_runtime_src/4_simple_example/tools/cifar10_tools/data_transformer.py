@@ -1,5 +1,3 @@
-set ff=UNIX
-#!/bin/bash
 # Copyright (c) 2020 Horizon Robotics.All Rights Reserved.
 #
 # The material in this file is confidential and contains trade secrets
@@ -7,12 +5,14 @@ set ff=UNIX
 # Horizon Robotics Inc. No part of this work may be disclosed,
 # reproduced, copied, transmitted, or used in any way for any purpose,
 # without the express written permission of Horizon Robotics Inc.
-set -e -v
-cd $(dirname $0)
-model="./model_output/yolov5_quantized_model.onnx"
-image="/data/shw/RGB-T/images/visible"
-anno="/data/shw/RGB-T/kaist_val_3354.json"
-python3 -u ./coco_evaluate.py \
-  --model=${model} \
-  --image_path=${image} \
-  --annotation_path=${anno}
+
+from easydict import EasyDict
+from horizon_nn.data.transformer import *
+
+
+def data_transformer():
+    # means = np.array([0.5, 0.5, 0.5], dtype=np.float32)
+    transformers = [
+        ColorConvertTransformer('RGB', 'GRAY', 'CHW'),
+    ]
+    return transformers

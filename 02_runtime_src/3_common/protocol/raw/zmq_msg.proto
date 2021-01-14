@@ -1,0 +1,53 @@
+// Copyright (c) 2020 Horizon Robotics.All Rights Reserved.
+//
+// The material in this file is confidential and contains trade secrets
+// of Horizon Robotics Inc. This is proprietary information owned by
+// Horizon Robotics Inc. No part of this work may be disclosed,
+// reproduced, copied, transmitted, or used in any way for any purpose,
+// without the express written permission of Horizon Robotics Inc.
+
+syntax = "proto3";
+package ZMQMessage;
+
+enum ImageFormat {
+    IMG_Y = 0;
+    IMG_NV12 = 1;
+    IMG_YUV444 = 2;
+    IMG_BGR = 3;
+    IMG_BGRP = 4;
+    IMG_RGB = 5;
+    IMG_RGBP = 6;
+    TENSOR_U8 = 7;
+    TENSOR_S8 = 8;
+    TENSOR_F32 = 9;
+    TENSOR_S32 = 10;
+	TENSOR_U32 = 11;
+	MAX = 12;
+}
+
+message ImageMsg {
+    enum DataType {
+        UINT8 = 0;
+        INT32 = 1;
+        FLOAT32 = 2;
+    }
+
+    bytes image_data = 1;
+    int32 image_width = 2;
+    int32 image_height = 3;
+    int32 image_dst_width = 4;
+    int32 image_dst_height = 5;
+    ImageFormat image_format = 6;
+    DataType data_type = 7;
+    string image_name = 8;
+}
+
+message ZMQMsg {
+    enum MsgType {
+        IMAGE_MSG = 0;
+        FINISH_MSG = 1; // No more msg to send
+    }
+    MsgType msg_type = 1;
+    ImageMsg img_msg = 2;
+}
+

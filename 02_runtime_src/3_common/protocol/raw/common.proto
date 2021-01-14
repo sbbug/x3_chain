@@ -1,0 +1,151 @@
+// Copyright (c) 2020 Horizon Robotics.All Rights Reserved.
+//
+// The material in this file is confidential and contains trade secrets
+// of Horizon Robotics Inc. This is proprietary information owned by
+// Horizon Robotics Inc. No part of this work may be disclosed,
+// reproduced, copied, transmitted, or used in any way for any purpose,
+// without the express written permission of Horizon Robotics Inc.
+
+// See README.txt for information and build instructions.
+//
+// Note: START and END tags are used in comments to define sections used in
+// tutorials.  They are not part of the syntax for Protocol Buffers.
+//
+// To get an in-depth walkthrough of this file and the related examples, see:
+// https://developers.google.com/protocol-buffers/docs/tutorials
+
+// [START declaration]
+syntax = "proto2";
+package CommonProto;
+// [END declaration]
+
+// [START messages]
+message Rect {
+  required float left = 1;
+  required float top = 2;
+  required float right = 3;
+  required float bottom = 4;
+}
+
+enum ImageFormat{
+  GRAY = 0;
+  YV12 = 1;
+  JPEG = 2;
+  PNG = 3;
+  CR12 = 4;
+  BAD = 5;
+  NV12 = 6;
+  NV21 = 7;
+  TIMEOUT = 8;
+}
+
+enum ParsingFormat {
+  ParsingFormat_Raw = 0;
+  ParsingFormat_Label = 1;
+  ParsingFormat_Label_RLE = 2;
+}
+
+message Image {
+  required int32 width = 1;
+  required int32 height = 2;
+  required int32 channel = 3;
+  optional int64 time_stamp = 4;
+  optional int32 send_mode = 5;
+  optional int32 format = 6;
+  optional int32 index = 7;
+  optional int32 count = 8;
+  optional int32 depth = 9;
+  optional int32 align = 10;
+}
+
+enum ObstacleRawModelType {
+  ObstacleRawModel_Car = 0;
+  ObstacleRawModel_FullCar = 1;
+  ObstacleRawModel_Ped = 2;
+  ObstacleRawModel_Head = 3;
+  ObstacleRawModel_Rare = 4;
+  ObstacleRawModel_TrafficSign = 5;
+  ObstacleRawModel_TrafficLight = 6;
+  ObstacleRawModel_Lane = 7;
+  ObstacleRawModel_RoadSign = 10;
+  ObstacleRawModel_Cyclist = 16;
+}
+
+message ObstacleRaw {
+  required Rect rect = 1;
+  required float conf = 2;
+  required int32 model = 3;
+  optional int32 source = 4;
+  //refer to above explanation for Obstacle
+  repeated int32 property = 6;
+  repeated string property_name = 7;
+  repeated int32 property_type = 8;
+}
+
+message ObstacleRaws {
+  optional int32 cam_id = 1;
+  repeated ObstacleRaw obstacle = 2;
+  optional float conf_scale = 3 [default = 0.1];  // confidence value scale factor
+}
+
+
+// we can reproduct a 3x3 Matrix(and its inverse)
+// convert points between image space and ground space
+message CameraMatrix {
+  repeated float mat_gnd2img = 1;  // 3x3
+  repeated float mat_img2gnd = 2;  // 3x3
+  repeated float mat_vcsgnd2img = 3;  // 3x3
+  repeated float mat_img2vcsgnd = 4;  // 3x3
+}
+
+message DistortParam {
+  repeated float param = 1;
+}
+message VCSParam {
+  repeated float rotation = 1;     // rotation relative to x, y, z axis
+  repeated float translation = 2;  // translation
+}
+
+enum CameraType {
+  CameraType_PinHole = 0;
+  CameraType_FishEye = 1;
+}
+
+// Camera Parameters
+message CameraParam {
+  required float focal_u = 1;
+  required float focal_v = 2;
+  required float center_u = 3;
+  required float center_v = 4;
+  required float camera_x = 5;
+  required float camera_y = 6;
+  required float camera_z = 7;
+  required float pitch = 8;
+  required float yaw = 9;
+  required float roll = 10;
+  
+  optional int32 type = 11 [default = 0];
+  optional float fov = 12;
+  
+  optional DistortParam distort = 20;
+  optional VCSParam vcs = 21; 
+  
+  optional CameraMatrix mat = 30;
+}
+
+message Color {
+  required uint32 b = 1;
+  required uint32 g = 2;
+  required uint32 r = 3;
+}
+
+message ParsingSetting {
+  required int32 parsing_type = 1;
+  required int32 parsing_channels = 2;
+  repeated uint64 channel_labels = 3;
+  repeated Color channel_colors = 4;
+  repeated int32 freespace_channels = 5;
+  repeated int32 boundspace_channels = 6;
+}
+
+// [END messages]

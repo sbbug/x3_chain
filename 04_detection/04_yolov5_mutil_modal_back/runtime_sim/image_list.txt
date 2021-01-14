@@ -1,1 +1,1 @@
-/data/x3/x3_tc_1.1.17e/x3-toolchain-1.1.17e.tar/horizon_x3_tc_1.1.17e/samples/04_detection/02_yolov3_prune/test_img/0000068_02104_d_0000006.jpg
+../test_img/visible/I00525.jpg;../test_img/lwir/I00525.jpg

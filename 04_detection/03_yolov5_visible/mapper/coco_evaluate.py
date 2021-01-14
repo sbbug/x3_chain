@@ -52,7 +52,7 @@ def get_args():
         '--process-num',
         type=int,
         help='评测使用的进程数',
-        default=os.environ.get('PARALLEL_PROCESS_NUM', 10))
+        default=os.environ.get('PARALLEL_PROCESS_NUM', 5))
     args = parser.parse_args()
     return args
 
@@ -62,7 +62,7 @@ def yolo_loader(image_path, annotation_path):
     transformers.append(ColorConvertTransformer('RGB', 'YUV444'))
 
     data_loader = COCOValidDataLoader(
-        transformers, image_path, annotation_path, imread_mode='opencv')
+        transformers, image_path, annotation_path,batch_size=1, imread_mode='opencv')
     return data_loader
 
 
@@ -77,7 +77,7 @@ class DetectionExecutor():
         self.annotation_path = annotation_path
 
         self.classes = utils.get_classes()
-        self.num_classes = 80
+        self.num_classes = len(self.classes)
         self.anchors = np.array([
             10, 13, 16, 30, 33, 23, 30, 61, 62, 45, 59, 119, 116, 90, 156, 198,
             373, 326
@@ -108,12 +108,14 @@ class DetectionExecutor():
             self.output_name, {self.input_name: image},
             {self.input_name: "yuv444"})
 
-        pred_sbbox = pred_sbbox.reshape([1, 84, 84, 3,
-                                         85]).transpose([0, 3, 1, 2, 4])
-        pred_mbbox = pred_mbbox.reshape([1, 42, 42, 3,
-                                         85]).transpose([0, 3, 1, 2, 4])
-        pred_lbbox = pred_lbbox.reshape([1, 21, 21, 3,
-                                         85]).transpose([0, 3, 1, 2, 4])
+        # print(pred_sbbox.shape,pred_mbbox.shape,pred_lbbox.shape)
+        pred_sbbox = pred_sbbox.reshape([1, pred_sbbox.shape[1], pred_sbbox.shape[2], 3,
+                                         5 + self.num_classes]).transpose([0, 3, 1, 2, 4])
+        pred_mbbox = pred_mbbox.reshape([1, pred_mbbox.shape[1], pred_mbbox.shape[2], 3,
+                                         5 + self.num_classes]).transpose([0, 3, 1, 2, 4])
+        pred_lbbox = pred_lbbox.reshape([1, pred_lbbox.shape[1], pred_lbbox.shape[2], 3,
+                                         5 + self.num_classes]).transpose([0, 3, 1, 2, 4])
+
 
         pred_sbbox = utils.yolov5_decoder(pred_sbbox, self.num_anchors,
                                           self.num_classes, self.anchors[0],
@@ -259,7 +261,7 @@ def main():
 
     valid_executor = ParalleDetectionExecutor(
         onnx_model, args.image_path, args.annotation_path, args.process_num)
-    valid_executor.evaluate(data_loader)
+    valid_executor.evaluate(data_loader,num_valid=3354)
     valid_executor.result(model_name)
     valid_executor.report()
     end = time.time()

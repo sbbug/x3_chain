@@ -1,0 +1,35 @@
+// Copyright (c) 2020 Horizon Robotics.All Rights Reserved.
+//
+// The material in this file is confidential and contains trade secrets
+// of Horizon Robotics Inc. This is proprietary information owned by
+// Horizon Robotics Inc. No part of this work may be disclosed,
+// reproduced, copied, transmitted, or used in any way for any purpose,
+// without the express written permission of Horizon Robotics Inc.
+
+// See README.txt for information and build instructions.
+//
+// Note: START and END tags are used in comments to define sections used in
+// tutorials.  They are not part of the syntax for Protocol Buffers.
+//
+// To get an in-depth walkthrough of this file and the related examples, see:
+// https://developers.google.com/protocol-buffers/docs/tutorials
+
+// [START declaration]
+syntax = "proto2";
+package Meta;
+// [END declaration]
+
+import "meta_data.proto";
+import "common.proto";
+
+// [START messages]
+
+message Meta {
+  required int32 version = 1;
+  required int32 frame_id = 2;
+  optional CommonProto.Image img_frame = 4;
+  optional int32 proto_version = 5 [default = 1];
+  optional MetaData.Data data = 7;
+}
+
+// [END messages]

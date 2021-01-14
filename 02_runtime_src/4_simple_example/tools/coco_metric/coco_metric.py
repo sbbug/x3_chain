@@ -17,13 +17,22 @@ import json
 from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
 
+from config import coco_config
+
 
 class MSCOCODetMetric(object):
     class_names = [
-        "cyclist",
-        "person",
-        "people"
+        'pedestrian', 'people',
+        'bicycle', 'car', 'van', 'truck',
+        'tricycle', 'awning-tricycle', 'bus',
+        'motor',
     ]
+    # class_names = [
+    #     "Expressway-Service-area", "Expressway-toll-station", "airplane",
+    #     "airport", "baseballfield", "basketballcourt", "bridge", "chimney", "dam",
+    #     "golffield", "groundtrackfield", "harbor", "overpass", "ship", "stadium",
+    #     "storagetank", "tenniscourt", "trainstation", "vehicle", "windmill",
+    # ]
 
     def __init__(
             self,
@@ -32,7 +41,7 @@ class MSCOCODetMetric(object):
             overwrite=True,
             cleanup=False,
     ):
-
+        class_names = coco_config.CLASSES
         save_filename = "./tmp_file"
         anno_file = os.path.abspath(os.path.expanduser(annotation_file))
         self._coco_anno = COCO(anno_file)
@@ -49,7 +58,7 @@ class MSCOCODetMetric(object):
         for (i, cat) in enumerate(class_cat):
             name2jsonID[cat["name"]] = cat["id"]
         self._with_bg = False
-        for (i, name) in enumerate(MSCOCODetMetric.class_names):
+        for (i, name) in enumerate(class_names):
             name = name.split("|")[-1]
             if name not in ["background", "__background__"]:
                 assert name in name2jsonID
@@ -100,9 +109,7 @@ class MSCOCODetMetric(object):
         inst_list = []
         for pred in pred_result:
             coco_inst = {}
-            bbox = pred["bbox"].reshape((-1, ))
-            assert bbox.shape == (6, ), (
-                "bbox should with shape (6,), get %s" % bbox.shape)
+            bbox = pred["bbox"]
             coco_inst.update({
                 "image_id":
                     image_id,
@@ -139,11 +146,10 @@ class MSCOCODetMetric(object):
         return (names, values)
 
     def __del__(self):
-        if os.path.exists(self._filename):
-            try:
-                os.remove(self._filename)
-            except IOError as err:
-                warnings.warn(str(err))
+        try:
+            os.remove(self._filename)
+        except IOError as err:
+            warnings.warn(str(err))
 
     # internal utils
     def _dump_json(self):
@@ -170,15 +176,19 @@ class MSCOCODetMetric(object):
             iou_thr = coco_eval.params.iouThrs[ind]
             assert np.isclose(iou_thr, thr)
             return ind
-
+        # print("self._filename",self._filename)
+        with open(self._filename,'r') as f:
+            lines = f.readlines()
+            # print(lines)
         pred = self._coco_anno.loadRes(self._filename)
+
         coco_eval = COCOeval(self._coco_anno, pred, anno_type)
         coco_eval.evaluate()
         coco_eval.accumulate()
         ind_lo = _get_thr_ind(coco_eval, self.IoU_lo_thresh)
         ind_hi = _get_thr_ind(coco_eval, self.IoU_hi_thresh)
         precision = coco_eval.eval["precision"][ind_lo:(
-            ind_hi + 1), :, :, 0, 2]
+                ind_hi + 1), :, :, 0, 2]
         ap_default = np.mean(precision[precision > -1])
         names, values = ([], [])
         names.append("====== Summary {} metrics ======\n".format(anno_type))
@@ -192,7 +202,7 @@ class MSCOCODetMetric(object):
         # collect MAP for each class
         for (cls_ind, cls_name) in self._contiguous_id_to_name.items():
             precision = coco_eval.eval["precision"][ind_lo:(
-                ind_hi + 1), :, cls_ind - int(self._with_bg), 0, 2]
+                    ind_hi + 1), :, cls_ind - int(self._with_bg), 0, 2]
             ap = np.mean(precision[precision > -1])
             names.append(cls_name)
             values.append("{:.1f}".format(100 * ap))

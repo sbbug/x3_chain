@@ -1,0 +1,63 @@
+// Copyright (c) 2020 Horizon Robotics.All Rights Reserved.
+//
+// The material in this file is confidential and contains trade secrets
+// of Horizon Robotics Inc. This is proprietary information owned by
+// Horizon Robotics Inc. No part of this work may be disclosed,
+// reproduced, copied, transmitted, or used in any way for any purpose,
+// without the express written permission of Horizon Robotics Inc.
+
+// See README.txt for information and build instructions.
+//
+// Note: START and END tags are used in comments to define sections used in
+// tutorials.  They are not part of the syntax for Protocol Buffers.
+//
+// To get an in-depth walkthrough of this file and the related examples, see:
+// https://developers.google.com/protocol-buffers/docs/tutorials
+
+// [START declaration]
+syntax = "proto2";
+package MetaData;
+// [END declaration]
+
+import "common.proto";
+
+// [START messages]
+
+message StructurePerception {
+  repeated CommonProto.ObstacleRaws obstacles_raws = 1;
+  
+  repeated CommonProto.Image parsing = 20;
+  repeated CommonProto.ParsingSetting parsing_settings = 40;
+}
+
+enum DataType {
+  DATA_IMG = 0;
+  DATA_PARSING = 1;
+}
+
+message SerializedData {
+  required string type = 1;
+  required bytes  proto = 2;
+  required int32  channel = 4 [default = 0];
+  required bool   with_data_field = 5 [default = true];
+}
+
+message DataDescriptor {
+  optional string type = 1;
+  optional SerializedData data = 2;
+}
+
+message Data {
+  required int32 version = 1;
+  required int32 frame_id = 2;
+  repeated CommonProto.Image image = 3;
+  repeated DataDescriptor data_descriptor = 4;
+  
+  repeated CommonProto.CameraParam camera = 10;
+  repeated CommonProto.CameraParam camera_default = 11;
+  repeated CommonProto.CameraMatrix camera_matrix = 12;
+
+  optional StructurePerception structure_perception = 30;
+}
+
+// [END messages]

@@ -13,7 +13,7 @@ cd "$(dirname $0)" || exit
 source ../../env.conf
 source ../env.conf
 
-runtime_model_file="../mapper/model_output/${sample_name}_hybrid_horizonrt.bin"
+runtime_model_file="../mapper/model_output/${sample_name}_mutil_modal_back_hybrid_horizonrt.bin"
 model_name=${sample_name}
 
 echo ${test_image} >image_list.txt
@@ -24,7 +24,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./release/lib
 ./release/bin/example \
   --model_file=${runtime_model_file} \
   --model_name=${model_name} \
-  --input_type=image \
+  --input_type=mutil_modal \
   --input_config_string="{\"image_list_file\":\"image_list.txt\",\"width\":${input_width},\"height\":${input_height},\"data_type\":${input_type}}" \
   --output_type=image \
   --output_config_string={\"image_output_dir\":\"image_out\"} \
