@@ -1,0 +1,395 @@
+2021-01-12 11:39:25,455 INFO hb_mapper_checker 65 Model type: onnx
+2021-01-12 11:39:25,455 DEBUG hb_mapper_checker 66 march: bernoulli2
+2021-01-12 11:39:25,455 INFO hb_mapper_checker 67 output file: ./yolov5_checker.log
+2021-01-12 11:39:25,455 INFO hb_mapper_checker 72 input names []
+2021-01-12 11:39:25,455 INFO hb_mapper_checker 73 input shapes {}
+2021-01-12 11:39:25,455 INFO hb_mapper_checker 79 Begin model checking....
+2021-01-12 11:39:25,456 INFO build 32 [Tue Jan 12 11:39:25 2021] Start to Horizon NN Model Convert.
+2021-01-12 11:39:25,456 INFO build 130 The input parameter is not specified, convert with default parameters.
+2021-01-12 11:39:25,456 INFO build 167 The hbdk parameter is not specified, and the submodel will be compiled with the default parameter.
+2021-01-12 11:39:25,456 INFO build 117 HorizonNN version: 0.8.1
+2021-01-12 11:39:25,456 INFO build 121 HBDK version: 3.13.2
+2021-01-12 11:39:25,456 INFO build 32 [Tue Jan 12 11:39:25 2021] Start to parse the onnx model.
+2021-01-12 11:39:25,856 INFO onnx_parser 101 ONNX model info:
+ONNX IR version:  6
+Opset version:    10
+Input name:       x1, [1, 3, 576, 704]
+Input name:       x2, [1, 3, 576, 704]
+2021-01-12 11:39:26,338 INFO build 35 [Tue Jan 12 11:39:26 2021] End to parse the onnx model.
+2021-01-12 11:39:26,341 INFO build 257 Model input names: ['x1', 'x2']
+2021-01-12 11:39:26,460 INFO build 603 Saving the original float model: ./.hb_check/original_float_model.onnx.
+2021-01-12 11:39:26,462 INFO build 32 [Tue Jan 12 11:39:26 2021] Start to optimize the model.
+2021-01-12 11:39:27,194 INFO build 35 [Tue Jan 12 11:39:27 2021] End to optimize the model.
+2021-01-12 11:39:27,311 INFO build 614 Saving the optimized model: ./.hb_check/optimized_float_model.onnx.
+2021-01-12 11:39:27,312 INFO build 32 [Tue Jan 12 11:39:27 2021] Start to calibrate the model.
+2021-01-12 11:39:27,941 INFO build 35 [Tue Jan 12 11:39:27 2021] End to calibrate the model.
+2021-01-12 11:39:27,945 INFO build 32 [Tue Jan 12 11:39:27 2021] Start to quantize the model.
+2021-01-12 11:39:31,333 INFO build 35 [Tue Jan 12 11:39:31 2021] End to quantize the model.
+2021-01-12 11:39:32,770 INFO build 628 Saving the quantized model: ./.hb_check/quantized_model.onnx.
+2021-01-12 11:39:32,770 INFO build 32 [Tue Jan 12 11:39:32 2021] Start to compile the model with march bernoulli2.
+2021-01-12 11:39:34,573 INFO hybrid_build 111 Compile submodel: torch-jit-export_subgraph_0
+2021-01-12 11:39:35,975 INFO hbdk_cc 134 hbdk-cc parameters:{'optimize-level': 'O0', 'input-layout': 'NHWC', 'output-layout': 'NCHW'}
+2021-01-12 11:39:41,643 INFO hybrid_build 111 Compile submodel: torch-jit-export_subgraph_1
+2021-01-12 11:39:43,072 INFO hbdk_cc 134 hbdk-cc parameters:{'optimize-level': 'O0', 'input-layout': 'NHWC', 'output-layout': 'NCHW'}
+2021-01-12 11:39:48,728 INFO build 35 [Tue Jan 12 11:39:48 2021] End to compile the model with march bernoulli2.
+2021-01-12 11:39:48,737 INFO node_info 58 The converted model node information:
+================================================================================
+Node                                  ON   Subgraph  Type                       
+--------------------------------------------------------------------------------
+Slice_4                               CPU  --        Slice                      
+Slice_9                               CPU  --        Slice                      
+Slice_14                              CPU  --        Slice                      
+Slice_19                              CPU  --        Slice                      
+Slice_24                              CPU  --        Slice                      
+Slice_29                              CPU  --        Slice                      
+Slice_34                              CPU  --        Slice                      
+Slice_39                              CPU  --        Slice                      
+Concat_40                             CPU  --        Concat                     
+Conv_41                               BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_42                          BPU  id(0)     HzLeakyRelu                
+Conv_43                               BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_44                          BPU  id(0)     HzLeakyRelu                
+Conv_45                               BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_46                          BPU  id(0)     HzLeakyRelu                
+Conv_47                               BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_48                          BPU  id(0)     HzLeakyRelu                
+Conv_49                               BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_50                          BPU  id(0)     HzLeakyRelu                
+UNIT_CONV_FOR_Add_51                  BPU  id(0)     HzSQuantizedConv           
+Conv_52                               BPU  id(0)     HzSQuantizedConv           
+Conv_53                               BPU  id(0)     HzSQuantizedConv           
+Concat_54                             BPU  id(0)     Concat                     
+UNIT_CONV_FOR_BatchNormalization_55   BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_56                          BPU  id(0)     HzLeakyRelu                
+Conv_57                               BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_58                          BPU  id(0)     HzLeakyRelu                
+Conv_59                               BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_60                          BPU  id(0)     HzLeakyRelu                
+Conv_61                               BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_62                          BPU  id(0)     HzLeakyRelu                
+Conv_63                               BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_64                          BPU  id(0)     HzLeakyRelu                
+Conv_65                               BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_66                          BPU  id(0)     HzLeakyRelu                
+UNIT_CONV_FOR_Add_67                  BPU  id(0)     HzSQuantizedConv           
+Conv_68                               BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_69                          BPU  id(0)     HzLeakyRelu                
+Conv_70                               BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_71                          BPU  id(0)     HzLeakyRelu                
+UNIT_CONV_FOR_Add_72                  BPU  id(0)     HzSQuantizedConv           
+Conv_73                               BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_74                          BPU  id(0)     HzLeakyRelu                
+Conv_75                               BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_76                          BPU  id(0)     HzLeakyRelu                
+UNIT_CONV_FOR_Add_77                  BPU  id(0)     HzSQuantizedConv           
+Conv_78                               BPU  id(0)     HzSQuantizedConv           
+Conv_79                               BPU  id(0)     HzSQuantizedConv           
+Concat_80                             BPU  id(0)     Concat                     
+UNIT_CONV_FOR_BatchNormalization_81   BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_82                          BPU  id(0)     HzLeakyRelu                
+Conv_83                               BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_84                          BPU  id(0)     HzLeakyRelu                
+Conv_85                               BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_86                          BPU  id(0)     HzLeakyRelu                
+Conv_87                               BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_88                          BPU  id(0)     HzLeakyRelu                
+Conv_89                               BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_90                          BPU  id(0)     HzLeakyRelu                
+Conv_91                               BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_92                          BPU  id(0)     HzLeakyRelu                
+UNIT_CONV_FOR_Add_93                  BPU  id(0)     HzSQuantizedConv           
+Conv_94                               BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_95                          BPU  id(0)     HzLeakyRelu                
+Conv_96                               BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_97                          BPU  id(0)     HzLeakyRelu                
+UNIT_CONV_FOR_Add_98                  BPU  id(0)     HzSQuantizedConv           
+Conv_99                               BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_100                         BPU  id(0)     HzLeakyRelu                
+Conv_101                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_102                         BPU  id(0)     HzLeakyRelu                
+UNIT_CONV_FOR_Add_103                 BPU  id(0)     HzSQuantizedConv           
+Conv_104                              BPU  id(0)     HzSQuantizedConv           
+Conv_105                              BPU  id(0)     HzSQuantizedConv           
+Concat_106                            BPU  id(0)     Concat                     
+UNIT_CONV_FOR_BatchNormalization_107  BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_108                         BPU  id(0)     HzLeakyRelu                
+Conv_109                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_110                         BPU  id(0)     HzLeakyRelu                
+Conv_111                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_112                         BPU  id(0)     HzLeakyRelu                
+Conv_113                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_114                         BPU  id(0)     HzLeakyRelu                
+MaxPool_115                           BPU  id(0)     HzQuantizedMaxPool         
+MaxPool_116                           BPU  id(0)     HzQuantizedMaxPool         
+MaxPool_117                           BPU  id(0)     HzQuantizedMaxPool         
+Concat_118                            BPU  id(0)     Concat                     
+Conv_119                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_120                         BPU  id(0)     HzLeakyRelu                
+Conv_121                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_122                         BPU  id(0)     HzLeakyRelu                
+Conv_123                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_124                         BPU  id(0)     HzLeakyRelu                
+Conv_125                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_126                         BPU  id(0)     HzLeakyRelu                
+Conv_127                              BPU  id(0)     HzSQuantizedConv           
+Conv_128                              BPU  id(0)     HzSQuantizedConv           
+Concat_129                            BPU  id(0)     Concat                     
+UNIT_CONV_FOR_BatchNormalization_130  BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_131                         BPU  id(0)     HzLeakyRelu                
+Conv_132                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_133                         BPU  id(0)     HzLeakyRelu                
+Conv_134                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_135                         BPU  id(0)     HzLeakyRelu                
+Resize_136                            BPU  id(0)     HzQuantizedResizeUpsample  
+Concat_137                            BPU  id(0)     Concat                     
+Conv_138                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_139                         BPU  id(0)     HzLeakyRelu                
+Conv_140                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_141                         BPU  id(0)     HzLeakyRelu                
+Conv_142                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_143                         BPU  id(0)     HzLeakyRelu                
+Conv_144                              BPU  id(0)     HzSQuantizedConv           
+Conv_145                              BPU  id(0)     HzSQuantizedConv           
+Concat_146                            BPU  id(0)     Concat                     
+UNIT_CONV_FOR_BatchNormalization_147  BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_148                         BPU  id(0)     HzLeakyRelu                
+Conv_149                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_150                         BPU  id(0)     HzLeakyRelu                
+Conv_151                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_152                         BPU  id(0)     HzLeakyRelu                
+Resize_153                            BPU  id(0)     HzQuantizedResizeUpsample  
+Concat_154                            BPU  id(0)     Concat                     
+Conv_155                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_156                         BPU  id(0)     HzLeakyRelu                
+Conv_157                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_158                         BPU  id(0)     HzLeakyRelu                
+Conv_159                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_160                         BPU  id(0)     HzLeakyRelu                
+Conv_161                              BPU  id(0)     HzSQuantizedConv           
+Conv_162                              BPU  id(0)     HzSQuantizedConv           
+Concat_163                            BPU  id(0)     Concat                     
+UNIT_CONV_FOR_BatchNormalization_164  BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_165                         BPU  id(0)     HzLeakyRelu                
+Conv_166                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_167                         BPU  id(0)     HzLeakyRelu                
+Conv_168                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_169                         BPU  id(0)     HzLeakyRelu                
+Concat_170                            BPU  id(0)     Concat                     
+Conv_171                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_172                         BPU  id(0)     HzLeakyRelu                
+Conv_173                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_174                         BPU  id(0)     HzLeakyRelu                
+Conv_175                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_176                         BPU  id(0)     HzLeakyRelu                
+Conv_177                              BPU  id(0)     HzSQuantizedConv           
+Conv_178                              BPU  id(0)     HzSQuantizedConv           
+Concat_179                            BPU  id(0)     Concat                     
+UNIT_CONV_FOR_BatchNormalization_180  BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_181                         BPU  id(0)     HzLeakyRelu                
+Conv_182                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_183                         BPU  id(0)     HzLeakyRelu                
+Conv_184                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_185                         BPU  id(0)     HzLeakyRelu                
+Concat_186                            BPU  id(0)     Concat                     
+Conv_187                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_188                         BPU  id(0)     HzLeakyRelu                
+Conv_189                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_190                         BPU  id(0)     HzLeakyRelu                
+Conv_191                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_192                         BPU  id(0)     HzLeakyRelu                
+Conv_193                              BPU  id(0)     HzSQuantizedConv           
+Conv_194                              BPU  id(0)     HzSQuantizedConv           
+Concat_195                            BPU  id(0)     Concat                     
+UNIT_CONV_FOR_BatchNormalization_196  BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_197                         BPU  id(0)     HzLeakyRelu                
+Conv_198                              BPU  id(0)     HzSQuantizedConv           
+LeakyRelu_199                         BPU  id(0)     HzLeakyRelu                
+Conv_200                              BPU  id(0)     HzSQuantizedConv           
+Reshape_214                           CPU  --        Reshape                    
+Transpose_215                         CPU  --        Transpose                  
+Conv_216                              BPU  id(0)     HzSQuantizedConv           
+Reshape_230                           CPU  --        Reshape                    
+Transpose_231                         CPU  --        Transpose                  
+Conv_232                              BPU  id(0)     HzSQuantizedConv           
+Reshape_246                           CPU  --        Reshape                    
+Transpose_247                         CPU  --        Transpose                  
+Slice_252                             CPU  --        Slice                      
+Slice_257                             CPU  --        Slice                      
+Slice_262                             CPU  --        Slice                      
+Slice_267                             CPU  --        Slice                      
+Slice_272                             CPU  --        Slice                      
+Slice_277                             CPU  --        Slice                      
+Slice_282                             CPU  --        Slice                      
+Slice_287                             CPU  --        Slice                      
+Concat_288                            CPU  --        Concat                     
+Conv_289                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_290                         BPU  id(1)     HzLeakyRelu                
+Conv_291                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_292                         BPU  id(1)     HzLeakyRelu                
+Conv_293                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_294                         BPU  id(1)     HzLeakyRelu                
+Conv_295                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_296                         BPU  id(1)     HzLeakyRelu                
+Conv_297                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_298                         BPU  id(1)     HzLeakyRelu                
+UNIT_CONV_FOR_Add_299                 BPU  id(1)     HzSQuantizedConv           
+Conv_300                              BPU  id(1)     HzSQuantizedConv           
+Conv_301                              BPU  id(1)     HzSQuantizedConv           
+Concat_302                            BPU  id(1)     Concat                     
+UNIT_CONV_FOR_BatchNormalization_303  BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_304                         BPU  id(1)     HzLeakyRelu                
+Conv_305                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_306                         BPU  id(1)     HzLeakyRelu                
+Conv_307                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_308                         BPU  id(1)     HzLeakyRelu                
+Conv_309                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_310                         BPU  id(1)     HzLeakyRelu                
+Conv_311                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_312                         BPU  id(1)     HzLeakyRelu                
+Conv_313                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_314                         BPU  id(1)     HzLeakyRelu                
+UNIT_CONV_FOR_Add_315                 BPU  id(1)     HzSQuantizedConv           
+Conv_316                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_317                         BPU  id(1)     HzLeakyRelu                
+Conv_318                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_319                         BPU  id(1)     HzLeakyRelu                
+UNIT_CONV_FOR_Add_320                 BPU  id(1)     HzSQuantizedConv           
+Conv_321                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_322                         BPU  id(1)     HzLeakyRelu                
+Conv_323                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_324                         BPU  id(1)     HzLeakyRelu                
+UNIT_CONV_FOR_Add_325                 BPU  id(1)     HzSQuantizedConv           
+Conv_326                              BPU  id(1)     HzSQuantizedConv           
+Conv_327                              BPU  id(1)     HzSQuantizedConv           
+Concat_328                            BPU  id(1)     Concat                     
+UNIT_CONV_FOR_BatchNormalization_329  BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_330                         BPU  id(1)     HzLeakyRelu                
+Conv_331                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_332                         BPU  id(1)     HzLeakyRelu                
+Conv_333                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_334                         BPU  id(1)     HzLeakyRelu                
+Conv_335                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_336                         BPU  id(1)     HzLeakyRelu                
+Conv_337                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_338                         BPU  id(1)     HzLeakyRelu                
+Conv_339                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_340                         BPU  id(1)     HzLeakyRelu                
+UNIT_CONV_FOR_Add_341                 BPU  id(1)     HzSQuantizedConv           
+Conv_342                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_343                         BPU  id(1)     HzLeakyRelu                
+Conv_344                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_345                         BPU  id(1)     HzLeakyRelu                
+UNIT_CONV_FOR_Add_346                 BPU  id(1)     HzSQuantizedConv           
+Conv_347                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_348                         BPU  id(1)     HzLeakyRelu                
+Conv_349                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_350                         BPU  id(1)     HzLeakyRelu                
+UNIT_CONV_FOR_Add_351                 BPU  id(1)     HzSQuantizedConv           
+Conv_352                              BPU  id(1)     HzSQuantizedConv           
+Conv_353                              BPU  id(1)     HzSQuantizedConv           
+Concat_354                            BPU  id(1)     Concat                     
+UNIT_CONV_FOR_BatchNormalization_355  BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_356                         BPU  id(1)     HzLeakyRelu                
+Conv_357                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_358                         BPU  id(1)     HzLeakyRelu                
+Conv_359                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_360                         BPU  id(1)     HzLeakyRelu                
+Conv_361                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_362                         BPU  id(1)     HzLeakyRelu                
+MaxPool_363                           BPU  id(1)     HzQuantizedMaxPool         
+MaxPool_364                           BPU  id(1)     HzQuantizedMaxPool         
+MaxPool_365                           BPU  id(1)     HzQuantizedMaxPool         
+Concat_366                            BPU  id(1)     Concat                     
+Conv_367                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_368                         BPU  id(1)     HzLeakyRelu                
+Conv_369                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_370                         BPU  id(1)     HzLeakyRelu                
+Conv_371                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_372                         BPU  id(1)     HzLeakyRelu                
+Conv_373                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_374                         BPU  id(1)     HzLeakyRelu                
+Conv_375                              BPU  id(1)     HzSQuantizedConv           
+Conv_376                              BPU  id(1)     HzSQuantizedConv           
+Concat_377                            BPU  id(1)     Concat                     
+UNIT_CONV_FOR_BatchNormalization_378  BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_379                         BPU  id(1)     HzLeakyRelu                
+Conv_380                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_381                         BPU  id(1)     HzLeakyRelu                
+Conv_382                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_383                         BPU  id(1)     HzLeakyRelu                
+Resize_384                            BPU  id(1)     HzQuantizedResizeUpsample  
+Concat_385                            BPU  id(1)     Concat                     
+Conv_386                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_387                         BPU  id(1)     HzLeakyRelu                
+Conv_388                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_389                         BPU  id(1)     HzLeakyRelu                
+Conv_390                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_391                         BPU  id(1)     HzLeakyRelu                
+Conv_392                              BPU  id(1)     HzSQuantizedConv           
+Conv_393                              BPU  id(1)     HzSQuantizedConv           
+Concat_394                            BPU  id(1)     Concat                     
+UNIT_CONV_FOR_BatchNormalization_395  BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_396                         BPU  id(1)     HzLeakyRelu                
+Conv_397                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_398                         BPU  id(1)     HzLeakyRelu                
+Conv_399                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_400                         BPU  id(1)     HzLeakyRelu                
+Resize_401                            BPU  id(1)     HzQuantizedResizeUpsample  
+Concat_402                            BPU  id(1)     Concat                     
+Conv_403                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_404                         BPU  id(1)     HzLeakyRelu                
+Conv_405                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_406                         BPU  id(1)     HzLeakyRelu                
+Conv_407                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_408                         BPU  id(1)     HzLeakyRelu                
+Conv_409                              BPU  id(1)     HzSQuantizedConv           
+Conv_410                              BPU  id(1)     HzSQuantizedConv           
+Concat_411                            BPU  id(1)     Concat                     
+UNIT_CONV_FOR_BatchNormalization_412  BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_413                         BPU  id(1)     HzLeakyRelu                
+Conv_414                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_415                         BPU  id(1)     HzLeakyRelu                
+Conv_416                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_417                         BPU  id(1)     HzLeakyRelu                
+Concat_418                            BPU  id(1)     Concat                     
+Conv_419                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_420                         BPU  id(1)     HzLeakyRelu                
+Conv_421                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_422                         BPU  id(1)     HzLeakyRelu                
+Conv_423                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_424                         BPU  id(1)     HzLeakyRelu                
+Conv_425                              BPU  id(1)     HzSQuantizedConv           
+Conv_426                              BPU  id(1)     HzSQuantizedConv           
+Concat_427                            BPU  id(1)     Concat                     
+UNIT_CONV_FOR_BatchNormalization_428  BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_429                         BPU  id(1)     HzLeakyRelu                
+Conv_430                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_431                         BPU  id(1)     HzLeakyRelu                
+Conv_432                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_433                         BPU  id(1)     HzLeakyRelu                
+Concat_434                            BPU  id(1)     Concat                     
+Conv_435                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_436                         BPU  id(1)     HzLeakyRelu                
+Conv_437                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_438                         BPU  id(1)     HzLeakyRelu                
+Conv_439                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_440                         BPU  id(1)     HzLeakyRelu                
+Conv_441                              BPU  id(1)     HzSQuantizedConv           
+Conv_442                              BPU  id(1)     HzSQuantizedConv           
+Concat_443                            BPU  id(1)     Concat                     
+UNIT_CONV_FOR_BatchNormalization_444  BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_445                         BPU  id(1)     HzLeakyRelu                
+Conv_446                              BPU  id(1)     HzSQuantizedConv           
+LeakyRelu_447                         BPU  id(1)     HzLeakyRelu                
+Conv_448                              BPU  id(1)     HzSQuantizedConv           
+Reshape_462                           CPU  --        Reshape                    
+Transpose_463                         CPU  --        Transpose                  
+Conv_464                              BPU  id(1)     HzSQuantizedConv           
+Reshape_478                           CPU  --        Reshape                    
+Transpose_479                         CPU  --        Transpose                  
+Conv_480                              BPU  id(1)     HzSQuantizedConv           
+Reshape_494                           CPU  --        Reshape                    
+Transpose_495                         CPU  --        Transpose                  
+2021-01-12 11:39:48,746 INFO build 35 [Tue Jan 12 11:39:48 2021] End to Horizon NN Model Convert.
+2021-01-12 11:39:48,764 INFO onnx2horizonrt 1591 model deps info empty
+2021-01-12 11:39:48,817 INFO hb_mapper_checker 102 End model checking....
