@@ -40,7 +40,7 @@ class DataIterator {
 
   support mutil modal get
   */
-  bool Next(ImageTensor *visible_image_tensor,ImageTensor *lwir_image_tensor);
+  virtual bool Next(ImageTensor *visible_image_tensor,ImageTensor *lwir_image_tensor) = 0;
   /**
    * Release image_tensor
    * @param[in] image_tensor: image tensor to be released

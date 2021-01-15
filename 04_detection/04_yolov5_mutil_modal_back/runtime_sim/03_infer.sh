@@ -23,8 +23,8 @@ mkdir image_out
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./release/lib
 ./release/bin/example \
   --model_file=${runtime_model_file} \
-  --model_name=${model_name} \
-  --input_type=mutil_modal \
+  --model_name=yolov5_mutil_modal \
+  --input_type=image \
   --input_config_string="{\"image_list_file\":\"image_list.txt\",\"width\":${input_width},\"height\":${input_height},\"data_type\":${input_type}}" \
   --output_type=image \
   --output_config_string={\"image_output_dir\":\"image_out\"} \

@@ -27,6 +27,7 @@ add_library(common
         src/post_process/yolo2_post_process.cc
         src/post_process/yolo3_post_process.cc
         src/post_process/yolo5_post_process.cc
+        src/post_process/yolo5_mutil_modal_post_process.cc
         src/input/data_iterator.cc
         src/input/image_list_data_iterator.cc
         src/input/mutil_modal_image_list_data_iterator.cc

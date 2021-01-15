@@ -94,14 +94,17 @@ int main(int argc, char **argv) {
   Stopwatch whole_watch;
   Stopwatch infer_watch;
   Stopwatch post_process_watch;
+
   // Run loop
   while (data_iterator->HasNext()) {
     // Fetch one frame
     if (!data_iterator->Next(&visible_data,&lwir_data)) {
       continue;
     }
+
     std::cout<<visible_data<<lwir_data<<std::endl;
     std::cout<<visible_data.image_name<<lwir_data.image_name<<std::endl;
+    std::cout<<"+++++++++++++++++++++++++++++++++++"<<std::endl;
     // Prepare input & output tensors
     input_tensors[0] = visible_data.tensor;
     input_tensors[1] = lwir_data.tensor;
@@ -129,17 +132,31 @@ int main(int argc, char **argv) {
     LOG_IF(FATAL, ret_code != 0)
         << "Run model failed:" << HB_BPU_getErrorName(ret_code);
     infer_watch.Stop();
-
+    /*
+    output_tensors:
+     0:1x84x84x24
+     1:1x42x42x24
+     2:1x21x21x24
+     3:1x84x84x24
+     4:1x42x42x24
+     5:1x21x21x24
+    */
+    for(int i=0;i<output_tensors.size();i++){
+       std::cout<<output_tensors[i].data_shape.d[0]<<"X";
+       std::cout<<output_tensors[i].data_shape.d[1]<<"X";
+       std::cout<<output_tensors[i].data_shape.d[2]<<"X";
+       std::cout<<output_tensors[i].data_shape.d[3]<<std::endl;
+    }
     Perception perception;
     if (FLAGS_enable_post_process) {
       // Post process
       post_process_watch.Start();
       post_process_module->PostProcess(
-          output_tensors.data(), &data, &perception);
+          output_tensors.data(), &visible_data, &perception);
       post_process_watch.Stop();
       whole_watch.Stop();
       // Write output
-      output->Write(&data, &perception);
+      output->Write(&visible_data, &perception);
     }
 
     if (!FLAGS_enable_post_process) {
@@ -149,13 +166,14 @@ int main(int argc, char **argv) {
     release_output_tensor(output_tensors);
 
     // Release frame data
-    data_iterator->Release(&data);
+    data_iterator->Release(&visible_data);
+    data_iterator->Release(&lwir_data);
 
     if (FLAGS_enable_post_process) {
-      LOG(INFO) << "Image:" << data.image_name
+      LOG(INFO) << "Image:" << visible_data.image_name
                 << ", infer result:" << perception << std::endl;
     } else {
-      LOG(INFO) << "Image:" << data.image_name << ", infer end.";
+      LOG(INFO) << "Image:" << visible_data.image_name << ", infer end.";
     }
   }
 
@@ -178,4 +196,5 @@ int main(int argc, char **argv) {
 
   // Release model
   HB_BPU_releaseModel(&bpu_model);
+
 }

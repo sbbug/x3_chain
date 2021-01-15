@@ -18,7 +18,7 @@
 #include "post_process/yolo2_post_process.h"
 #include "post_process/yolo3_post_process.h"
 #include "post_process/yolo5_post_process.h"
-
+#include "post_process/yolo5_mutil_modal_post_process.h"
 int PostProcessModule::Init(std::string config_file,
                             std::string config_string) {
   if (!config_file.empty()) {
@@ -68,7 +68,9 @@ PostProcessModule *PostProcessModule::GetImpl(const std::string &model_name) {
     return new Yolo3PostProcessModule(model_name);
   } else if (model_name == "yolov5") {
     return new Yolo5PostProcessModule(model_name);
-  } else if (model_name == "rfcn") {
+  }else if (model_name == "yolov5_mutil_modal") {
+    return new Yolo5MutilModalPostProcessModule(model_name);
+  }else if (model_name == "rfcn") {
     return new RfcnPostProcessModule(model_name);
   } else if (model_name == "segment") {
     return new SegmentPostProcessModule(model_name);

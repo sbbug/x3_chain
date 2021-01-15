@@ -60,8 +60,47 @@ bool ImageListDataIterator::Next(ImageTensor *image_tensor) {
   return true;
 }
 bool ImageListDataIterator::Next(ImageTensor *visible_image_tensor,ImageTensor *lwir_image_tensor){
+if (ifs_.eof()) {
+    is_finish_ = true;
+    return false;
+  }
 
-     return true;
+  std::string image_file;
+  ifs_ >> image_file;
+
+  std::vector<std::string> pairs = s_split(image_file,";");
+  std::string visible_image_file = pairs[0];
+  std::string lwir_image_file = pairs[1];
+
+  std::cout<<visible_image_file<<std::endl;
+  std::cout<<lwir_image_file<<std::endl;
+  if (visible_image_file.empty() || lwir_image_file.empty()) {
+    return false;
+  }
+
+  auto &visible_tensor = visible_image_tensor->tensor;
+  auto &lwir_tensor = lwir_image_tensor->tensor;
+  prepare_image_tensor(height_, width_, data_type_, &visible_tensor);
+  prepare_image_tensor(height_, width_, data_type_, &lwir_tensor);
+
+  read_image_tensor(visible_image_file,
+                    visible_image_tensor->ori_image_width,
+                    visible_image_tensor->ori_image_height,
+                    &visible_tensor);
+  read_image_tensor(lwir_image_file,
+                    lwir_image_tensor->ori_image_width,
+                    lwir_image_tensor->ori_image_height,
+                    &lwir_tensor);
+
+  visible_image_tensor->image_name = get_file_name(visible_image_file);
+  lwir_image_tensor->image_name = get_file_name(lwir_image_file);
+  visible_image_tensor->timestamp = Stopwatch::CurrentTs();
+  lwir_image_tensor->timestamp = visible_image_tensor->timestamp;
+  visible_image_tensor->frame_id = NextFrameId();
+  lwir_image_tensor->frame_id = visible_image_tensor->frame_id;
+  flush_tensor(&visible_tensor);
+  flush_tensor(&lwir_tensor);
+  return true;
 }
 void ImageListDataIterator::Release(ImageTensor *image_tensor) {
   release_tensor(&image_tensor->tensor);
